@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\CreateTaskCollectionPayload\Tests;
+namespace webignition\PantherSandbox\Tests;
 
 use Facebook\WebDriver\Remote\RemoteWebElement;
 use PHPUnit\Framework\TestCase;
@@ -23,8 +23,13 @@ class GoogleComTest extends TestCase
         $searchButton = $crawler->filter('.FPdoLc.VlcLAe input[name=btnK]')->getElement(0);
         $this->assertInstanceOf(RemoteWebElement::class, $searchButton);
 
-        $input->sendKeys("example");
-        $searchButton->submit();
+        if ($input instanceof RemoteWebElement) {
+            $input->sendKeys('example');
+        }
+
+        if ($searchButton instanceof RemoteWebElement) {
+            $searchButton->submit();
+        }
 
         $this->assertEquals('example - Google Search', $client->getTitle());
     }
