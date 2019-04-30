@@ -8,12 +8,23 @@ use Symfony\Component\Panther\Client;
 
 class GoogleComTest extends TestCase
 {
+    /**
+     * @var Client
+     */
+    private $client;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->client = Client::createChromeClient();
+    }
+
     public function testQuery()
     {
-        $client = Client::createChromeClient();
-        $crawler = $client->request('GET', 'https://www.google.com');
+        $crawler = $this->client->request('GET', 'https://www.google.com');
 
-        $this->assertEquals('Google', $client->getTitle());
+        $this->assertEquals('Google', $this->client->getTitle());
 
         /* @var RemoteWebElement $input */
         $input = $crawler->filter('.gLFyf.gsfi')->getElement(0);
@@ -31,6 +42,6 @@ class GoogleComTest extends TestCase
             $searchButton->submit();
         }
 
-        $this->assertEquals('example - Google Search', $client->getTitle());
+        $this->assertEquals('example - Google Search', $this->client->getTitle());
     }
 }
