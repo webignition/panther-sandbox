@@ -18,7 +18,10 @@ class SimplyTestableComLoginFailureTest extends TestCase
         $crawler = $client->getCrawler();
 
         $signInLink = $crawler->filter(".btn[href='https://gears.simplytestable.com/signin/']")->getElement(0);
-        $signInLink->click();
+
+        if ($signInLink instanceof RemoteWebElement) {
+            $signInLink->click();
+        }
 
         $this->assertRegExp("/^Sign in /", $client->getTitle());
         $this->assertEquals("https://gears.simplytestable.com/signin/", $client->getCurrentURL());
