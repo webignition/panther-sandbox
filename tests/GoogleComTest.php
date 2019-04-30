@@ -22,6 +22,7 @@ class GoogleComTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$client = Client::createChromeClient();
+        self::$client->start();
     }
 
     public static function tearDownAfterClass(): void
@@ -40,13 +41,17 @@ class GoogleComTest extends TestCase
 
     public function testOpen()
     {
-        self::$client->request('GET', 'https://www.google.com');
+        $this->setName('open https://www.google.com/');
+
+        self::$client->request('GET', 'https://www.google.com/');
 
         $this->assertEquals('Google', self::$client->getTitle());
     }
 
     public function testQuery()
     {
+        $this->setName('query "example"');
+
         /* @var RemoteWebElement $input */
         $input = self::$crawler->filter('.gLFyf.gsfi')->getElement(0);
         $this->assertInstanceOf(RemoteWebElement::class, $input);
