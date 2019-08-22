@@ -1,54 +1,139 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\PantherSandbox\Tests;
 
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Panther\Client;
+use Symfony\Component\Panther\DomCrawler\Crawler;
+use webignition\SymfonyDomCrawlerNavigator\Model\ElementLocator;
+use webignition\SymfonyDomCrawlerNavigator\Model\LocatorType;
+use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class SimplyTestableComLoginFailureTest extends TestCase
 {
-    public function testFoo()
+    /**
+     * @var Navigator
+     */
+    private $domCrawlerNavigator;
+
+    /**
+     * @var Client
+     */
+    private static $client;
+
+    /**
+     * @var Crawler
+     */
+    private static $crawler;
+
+    public static function setUpBeforeClass(): void
     {
-        $client = Client::createChromeClient();
-        $client->request('GET', 'https://simplytestable.com');
+        self::$client = Client::createChromeClient();
+        self::$client->start();
+    }
 
-        $this->assertEquals('Simply Testable professional automated front-end web testing', $client->getTitle());
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
 
-        $crawler = $client->getCrawler();
+        self::$client->quit();
+    }
 
-        $signInLink = $crawler->filter(".btn[href='https://gears.simplytestable.com/signin/']")->getElement(0);
+    protected function setUp(): void
+    {
+        parent::setUp();
 
-        if ($signInLink instanceof RemoteWebElement) {
-            $signInLink->click();
-        }
+        self::$crawler = self::$client->refreshCrawler();
+        $this->domCrawlerNavigator = Navigator::create(self::$crawler);
+    }
 
-        $this->assertRegExp("/^Sign in /", $client->getTitle());
-        $this->assertEquals("https://gears.simplytestable.com/signin/", $client->getCurrentURL());
+    public function testOpen()
+    {
+        self::$client->request('GET', 'https://simplytestable.com');
 
-        $crawler = $client->refreshCrawler();
+        $this->assertEquals('Simply Testable professional automated front-end web testing', self::$client->getTitle());
+    }
 
-        $this->assertCount(1, $crawler->filter('body.sign-in-render'));
+    public function testFollowSignInLink()
+    {
+        $signInLink = $this->domCrawlerNavigator->findElement(new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            '.btn[href="https://gears.simplytestable.com/signin/"]',
+            1
+        ));
 
-        $form = $crawler->filter('form[action="/signin/"]');
-        $emailInput = $form->filter('#email');
-        $passwordInput = $form->filter('#password');
-        $submitInput = $form->filter('button[type=submit]');
+        $signInLink->click();
+        self::$crawler = self::$client->refreshCrawler();
+        $this->domCrawlerNavigator->setCrawler(self::$crawler);
 
-        $this->assertEmpty($emailInput->getText());
-        $this->assertEmpty($passwordInput->getText());
+        $this->assertRegExp("/^Sign in /", self::$client->getTitle());
+        $this->assertEquals("https://gears.simplytestable.com/signin/", self::$client->getCurrentURL());
+
+        $this->assertTrue($this->domCrawlerNavigator->hasElement(new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            'body.sign-in-render',
+            1
+        )));
+    }
+
+    public function testSubmitEmptySignInForm()
+    {
+        $formLocator = new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            'form[action="/signin/"]',
+            1
+        );
+
+        $emailInput = $this->domCrawlerNavigator->findElement(
+            new ElementLocator(
+                LocatorType::CSS_SELECTOR,
+                '#email',
+                1
+            ),
+            $formLocator
+        );
+
+        $passwordInput = $this->domCrawlerNavigator->findElement(
+            new ElementLocator(
+                LocatorType::CSS_SELECTOR,
+                '#password',
+                1
+            ),
+            $formLocator
+        );
+
+        $submitInput = $this->domCrawlerNavigator->findElement(
+            new ElementLocator(
+                LocatorType::CSS_SELECTOR,
+                'button[type=submit]',
+                1
+            ),
+            $formLocator
+        );
+
+        $this->assertEquals('', $emailInput->getText());
+        $this->assertEquals('', $passwordInput->getText());
 
         $submitInput->click();
+        self::$crawler = self::$client->refreshCrawler();
+        $this->domCrawlerNavigator->setCrawler(self::$crawler);
 
-        $this->assertRegExp("/^Sign in /", $client->getTitle());
-        $this->assertEquals("https://gears.simplytestable.com/signin/?stay-signed-in=1", $client->getCurrentURL());
+        $this->assertRegExp("/^Sign in /", self::$client->getTitle());
+        $this->assertEquals(
+            "https://gears.simplytestable.com/signin/?stay-signed-in=1",
+            self::$client->getCurrentURL()
+        );
 
-        $crawler = $client->refreshCrawler();
+        $alert = $this->domCrawlerNavigator->findElement(new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            '.alert',
+            1
+        ));
 
-        $alert = $crawler->filter('.alert');
         $this->assertEquals(
             "×\nSlow down! You're going to have to enter in your email address to sign in.",
-            $alert->text()
+            $alert->getText()
         );
     }
 }

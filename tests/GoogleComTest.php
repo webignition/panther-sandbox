@@ -1,14 +1,22 @@
 <?php
+/** @noinspection PhpUnhandledExceptionInspection */
 
 namespace webignition\PantherSandbox\Tests;
 
-use Facebook\WebDriver\Remote\RemoteWebElement;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\DomCrawler\Crawler;
+use webignition\SymfonyDomCrawlerNavigator\Model\ElementLocator;
+use webignition\SymfonyDomCrawlerNavigator\Model\LocatorType;
+use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class GoogleComTest extends TestCase
 {
+    /**
+     * @var Navigator
+     */
+    private $domCrawlerNavigator;
+
     /**
      * @var Client
      */
@@ -37,6 +45,7 @@ class GoogleComTest extends TestCase
         parent::setUp();
 
         self::$crawler = self::$client->refreshCrawler();
+        $this->domCrawlerNavigator = Navigator::create(self::$crawler);
     }
 
     public function testOpen()
@@ -52,21 +61,23 @@ class GoogleComTest extends TestCase
     {
         $this->setName('query "example"');
 
-        /* @var RemoteWebElement $input */
-        $input = self::$crawler->filter('.gLFyf.gsfi')->getElement(0);
-        $this->assertInstanceOf(RemoteWebElement::class, $input);
+        $input = $this->domCrawlerNavigator->findElement(new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            '.gLFyf.gsfi',
+            1
+        ));
 
-        /* @var RemoteWebElement $searchButton */
-        $searchButton = self::$crawler->filter('.FPdoLc.VlcLAe input[name=btnK]')->getElement(0);
-        $this->assertInstanceOf(RemoteWebElement::class, $searchButton);
+        $searchButton = $this->domCrawlerNavigator->findElement(new ElementLocator(
+            LocatorType::CSS_SELECTOR,
+            '.FPdoLc.VlcLAe input[name=btnK]',
+            1
+        ));
 
-        if ($input instanceof RemoteWebElement) {
-            $input->sendKeys('example');
-        }
+        $input->sendKeys('example');
 
-        if ($searchButton instanceof RemoteWebElement) {
-            $searchButton->submit();
-        }
+        $searchButton->submit();
+        self::$crawler = self::$client->getCrawler();
+        $this->domCrawlerNavigator->setCrawler(self::$crawler);
 
         $this->assertEquals('example - Google Search', self::$client->getTitle());
     }
