@@ -33,8 +33,8 @@
     },
     "require": {
         "php": ">=7.2.0",
-        "symfony/panther": "^0.4.0",
-        "webignition/symfony-panther-dom-crawler-navigator": ">=0.5,<1"
+        "symfony/panther": "^0.5.0",
+        "webignition/symfony-panther-dom-crawler-navigator": ">=0.6,<1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.1",
