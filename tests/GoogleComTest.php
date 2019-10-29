@@ -6,8 +6,7 @@ namespace webignition\PantherSandbox\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\DomCrawler\Crawler;
-use webignition\SymfonyDomCrawlerNavigator\Model\ElementLocator;
-use webignition\SymfonyDomCrawlerNavigator\Model\LocatorType;
+use webignition\DomElementLocator\ElementLocator;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class GoogleComTest extends TestCase
@@ -61,14 +60,12 @@ class GoogleComTest extends TestCase
     {
         $this->setName('query "example"');
 
-        $input = $this->domCrawlerNavigator->findElement(new ElementLocator(
-            LocatorType::CSS_SELECTOR,
+        $input = $this->domCrawlerNavigator->findOne(new ElementLocator(
             '.gLFyf.gsfi',
             1
         ));
 
-        $searchButton = $this->domCrawlerNavigator->findElement(new ElementLocator(
-            LocatorType::CSS_SELECTOR,
+        $searchButton = $this->domCrawlerNavigator->findOne(new ElementLocator(
             '.FPdoLc.VlcLAe input[name=btnK]',
             1
         ));
