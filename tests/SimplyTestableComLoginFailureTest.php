@@ -6,8 +6,7 @@ namespace webignition\PantherSandbox\Tests;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Panther\Client;
 use Symfony\Component\Panther\DomCrawler\Crawler;
-use webignition\SymfonyDomCrawlerNavigator\Model\ElementLocator;
-use webignition\SymfonyDomCrawlerNavigator\Model\LocatorType;
+use webignition\DomElementLocator\ElementLocator;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class SimplyTestableComLoginFailureTest extends TestCase
@@ -57,8 +56,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
 
     public function testFollowSignInLink()
     {
-        $signInLink = $this->domCrawlerNavigator->findElement(new ElementLocator(
-            LocatorType::CSS_SELECTOR,
+        $signInLink = $this->domCrawlerNavigator->findOne(new ElementLocator(
             '.btn[href="https://gears.simplytestable.com/signin/"]',
             1
         ));
@@ -70,8 +68,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
         $this->assertRegExp("/^Sign in /", self::$client->getTitle());
         $this->assertEquals("https://gears.simplytestable.com/signin/", self::$client->getCurrentURL());
 
-        $this->assertTrue($this->domCrawlerNavigator->hasElement(new ElementLocator(
-            LocatorType::CSS_SELECTOR,
+        $this->assertTrue($this->domCrawlerNavigator->has(new ElementLocator(
             'body.sign-in-render',
             1
         )));
@@ -80,32 +77,28 @@ class SimplyTestableComLoginFailureTest extends TestCase
     public function testSubmitEmptySignInForm()
     {
         $formLocator = new ElementLocator(
-            LocatorType::CSS_SELECTOR,
             'form[action="/signin/"]',
             1
         );
 
-        $emailInput = $this->domCrawlerNavigator->findElement(
+        $emailInput = $this->domCrawlerNavigator->findOne(
             new ElementLocator(
-                LocatorType::CSS_SELECTOR,
                 '#email',
                 1
             ),
             $formLocator
         );
 
-        $passwordInput = $this->domCrawlerNavigator->findElement(
+        $passwordInput = $this->domCrawlerNavigator->findOne(
             new ElementLocator(
-                LocatorType::CSS_SELECTOR,
                 '#password',
                 1
             ),
             $formLocator
         );
 
-        $submitInput = $this->domCrawlerNavigator->findElement(
+        $submitInput = $this->domCrawlerNavigator->findOne(
             new ElementLocator(
-                LocatorType::CSS_SELECTOR,
                 'button[type=submit]',
                 1
             ),
@@ -125,8 +118,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
             self::$client->getCurrentURL()
         );
 
-        $alert = $this->domCrawlerNavigator->findElement(new ElementLocator(
-            LocatorType::CSS_SELECTOR,
+        $alert = $this->domCrawlerNavigator->findOne(new ElementLocator(
             '.alert',
             1
         ));
