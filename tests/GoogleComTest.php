@@ -1,52 +1,14 @@
 <?php
 /** @noinspection PhpUnhandledExceptionInspection */
 
+declare(strict_types=1);
+
 namespace webignition\PantherSandbox\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Panther\DomCrawler\Crawler;
 use webignition\DomElementLocator\ElementLocator;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
-class GoogleComTest extends TestCase
+class GoogleComTest extends AbstractBaseTest
 {
-    /**
-     * @var Navigator
-     */
-    private $domCrawlerNavigator;
-
-    /**
-     * @var Client
-     */
-    private static $client;
-
-    /**
-     * @var Crawler
-     */
-    private static $crawler;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::$client = Client::createChromeClient();
-        self::$client->start();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-
-        self::$client->quit();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        self::$crawler = self::$client->refreshCrawler();
-        $this->domCrawlerNavigator = Navigator::create(self::$crawler);
-    }
-
     public function testOpen()
     {
         $this->setName('open https://www.google.com/');
@@ -60,12 +22,12 @@ class GoogleComTest extends TestCase
     {
         $this->setName('query "example"');
 
-        $input = $this->domCrawlerNavigator->findOne(new ElementLocator(
+        $input = $this->navigator->findOne(new ElementLocator(
             '.gLFyf.gsfi',
             1
         ));
 
-        $searchButton = $this->domCrawlerNavigator->findOne(new ElementLocator(
+        $searchButton = $this->navigator->findOne(new ElementLocator(
             '.FPdoLc.VlcLAe input[name=btnK]',
             1
         ));
@@ -74,7 +36,7 @@ class GoogleComTest extends TestCase
 
         $searchButton->submit();
         self::$crawler = self::$client->getCrawler();
-        $this->domCrawlerNavigator->setCrawler(self::$crawler);
+        $this->navigator->setCrawler(self::$crawler);
 
         $this->assertEquals('example - Google Search', self::$client->getTitle());
     }
