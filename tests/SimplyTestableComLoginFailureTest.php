@@ -1,52 +1,14 @@
 <?php
 /** @noinspection PhpUnhandledExceptionInspection */
 
+declare(strict_types=1);
+
 namespace webignition\PantherSandbox\Tests;
 
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Panther\Client;
-use Symfony\Component\Panther\DomCrawler\Crawler;
 use webignition\DomElementLocator\ElementLocator;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
-class SimplyTestableComLoginFailureTest extends TestCase
+class SimplyTestableComLoginFailureTest extends AbstractBaseTest
 {
-    /**
-     * @var Navigator
-     */
-    private $domCrawlerNavigator;
-
-    /**
-     * @var Client
-     */
-    private static $client;
-
-    /**
-     * @var Crawler
-     */
-    private static $crawler;
-
-    public static function setUpBeforeClass(): void
-    {
-        self::$client = Client::createChromeClient();
-        self::$client->start();
-    }
-
-    public static function tearDownAfterClass(): void
-    {
-        parent::tearDownAfterClass();
-
-        self::$client->quit();
-    }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        self::$crawler = self::$client->refreshCrawler();
-        $this->domCrawlerNavigator = Navigator::create(self::$crawler);
-    }
-
     public function testOpen()
     {
         self::$client->request('GET', 'https://simplytestable.com');
@@ -56,19 +18,19 @@ class SimplyTestableComLoginFailureTest extends TestCase
 
     public function testFollowSignInLink()
     {
-        $signInLink = $this->domCrawlerNavigator->findOne(new ElementLocator(
+        $signInLink = $this->navigator->findOne(new ElementLocator(
             '.btn[href="https://gears.simplytestable.com/signin/"]',
             1
         ));
 
         $signInLink->click();
         self::$crawler = self::$client->refreshCrawler();
-        $this->domCrawlerNavigator->setCrawler(self::$crawler);
+        $this->navigator->setCrawler(self::$crawler);
 
         $this->assertRegExp("/^Sign in /", self::$client->getTitle());
         $this->assertEquals("https://gears.simplytestable.com/signin/", self::$client->getCurrentURL());
 
-        $this->assertTrue($this->domCrawlerNavigator->has(new ElementLocator(
+        $this->assertTrue($this->navigator->has(new ElementLocator(
             'body.sign-in-render',
             1
         )));
@@ -81,7 +43,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
             1
         );
 
-        $emailInput = $this->domCrawlerNavigator->findOne(
+        $emailInput = $this->navigator->findOne(
             new ElementLocator(
                 '#email',
                 1
@@ -89,7 +51,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
             $formLocator
         );
 
-        $passwordInput = $this->domCrawlerNavigator->findOne(
+        $passwordInput = $this->navigator->findOne(
             new ElementLocator(
                 '#password',
                 1
@@ -97,7 +59,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
             $formLocator
         );
 
-        $submitInput = $this->domCrawlerNavigator->findOne(
+        $submitInput = $this->navigator->findOne(
             new ElementLocator(
                 'button[type=submit]',
                 1
@@ -110,7 +72,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
 
         $submitInput->click();
         self::$crawler = self::$client->refreshCrawler();
-        $this->domCrawlerNavigator->setCrawler(self::$crawler);
+        $this->navigator->setCrawler(self::$crawler);
 
         $this->assertRegExp("/^Sign in /", self::$client->getTitle());
         $this->assertEquals(
@@ -118,7 +80,7 @@ class SimplyTestableComLoginFailureTest extends TestCase
             self::$client->getCurrentURL()
         );
 
-        $alert = $this->domCrawlerNavigator->findOne(new ElementLocator(
+        $alert = $this->navigator->findOne(new ElementLocator(
             '.alert',
             1
         ));
