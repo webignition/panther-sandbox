@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\PantherSandbox\Tests;
 
+use webignition\BaseBasilTestCase\AbstractBaseTest;
 use webignition\DomElementLocator\ElementLocator;
 
 class GoogleComTest extends AbstractBaseTest
