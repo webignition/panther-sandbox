@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace webignition\PantherSandbox\Tests;
 
 use webignition\BaseBasilTestCase\AbstractBaseTest;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class GoogleComTest extends AbstractBaseTest
 {
@@ -23,12 +23,12 @@ class GoogleComTest extends AbstractBaseTest
     {
         $this->setName('query "example"');
 
-        $input = $this->navigator->findOne(new ElementLocator(
+        $input = $this->navigator->findOne(new ElementIdentifier(
             '.gLFyf.gsfi',
             1
         ));
 
-        $searchButton = $this->navigator->findOne(new ElementLocator(
+        $searchButton = $this->navigator->findOne(new ElementIdentifier(
             '.FPdoLc.tfB0Bf input[name=btnK]',
             1
         ));
