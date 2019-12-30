@@ -29,7 +29,7 @@ class GoogleComTest extends AbstractBaseTest
         ));
 
         $searchButton = $this->navigator->findOne(new ElementLocator(
-            '.FPdoLc.VlcLAe input[name=btnK]',
+            '.FPdoLc.tfB0Bf input[name=btnK]',
             1
         ));
 
