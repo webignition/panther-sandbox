@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace webignition\PantherSandbox\Tests;
 
 use webignition\BaseBasilTestCase\AbstractBaseTest;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class SimplyTestableComLoginFailureTest extends AbstractBaseTest
 {
@@ -19,7 +19,7 @@ class SimplyTestableComLoginFailureTest extends AbstractBaseTest
 
     public function testFollowSignInLink()
     {
-        $signInLink = $this->navigator->findOne(new ElementLocator(
+        $signInLink = $this->navigator->findOne(new ElementIdentifier(
             '.btn[href="https://gears.simplytestable.com/signin/"]',
             1
         ));
@@ -31,7 +31,7 @@ class SimplyTestableComLoginFailureTest extends AbstractBaseTest
         $this->assertRegExp("/^Sign in /", self::$client->getTitle());
         $this->assertEquals("https://gears.simplytestable.com/signin/", self::$client->getCurrentURL());
 
-        $this->assertTrue($this->navigator->has(new ElementLocator(
+        $this->assertTrue($this->navigator->has(new ElementIdentifier(
             'body.sign-in-render',
             1
         )));
@@ -39,33 +39,21 @@ class SimplyTestableComLoginFailureTest extends AbstractBaseTest
 
     public function testSubmitEmptySignInForm()
     {
-        $formLocator = new ElementLocator(
-            'form[action="/signin/"]',
-            1
-        );
+        $formIdentifier = new ElementIdentifier('form[action="/signin/"]', 1);
 
         $emailInput = $this->navigator->findOne(
-            new ElementLocator(
-                '#email',
-                1
-            ),
-            $formLocator
+            (new ElementIdentifier('#email', 1))
+                ->withParentIdentifier($formIdentifier)
         );
 
         $passwordInput = $this->navigator->findOne(
-            new ElementLocator(
-                '#password',
-                1
-            ),
-            $formLocator
+            (new ElementIdentifier('#password', 1))
+                ->withParentIdentifier($formIdentifier)
         );
 
         $submitInput = $this->navigator->findOne(
-            new ElementLocator(
-                'button[type=submit]',
-                1
-            ),
-            $formLocator
+            (new ElementIdentifier('button[type=submit]', 1))
+                ->withParentIdentifier($formIdentifier)
         );
 
         $this->assertEquals('', $emailInput->getText());
@@ -81,7 +69,7 @@ class SimplyTestableComLoginFailureTest extends AbstractBaseTest
             self::$client->getCurrentURL()
         );
 
-        $alert = $this->navigator->findOne(new ElementLocator(
+        $alert = $this->navigator->findOne(new ElementIdentifier(
             '.alert',
             1
         ));

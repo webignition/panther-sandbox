@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4348e95b5120fccbe37d899e79a5611",
+    "content-hash": "d94191d70ef9f1046b752de0b0fae45a",
     "packages": [],
     "packages-dev": [
         {
@@ -1206,6 +1206,50 @@
                 "stub"
             ],
             "time": "2019-06-13T12:50:23+00:00"
+        },
+        {
+            "name": "phpstan/extension-installer",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/extension-installer.git",
+                "reference": "295656793c53b5eb73a38486032ad1bd650264bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/295656793c53b5eb73a38486032ad1bd650264bc",
+                "reference": "295656793c53b5eb73a38486032ad1bd650264bc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1",
+                "php": "^7.1",
+                "phpstan/phpstan": ">=0.11.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "consistence/coding-standard": "^3.8",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "phing/phing": "^2.16",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "slevomat/coding-standard": "^5.0.4"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PHPStan\\ExtensionInstaller\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\ExtensionInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer plugin for automatic installation of PHPStan extensions",
+            "time": "2019-10-18T17:09:48+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
@@ -3273,30 +3317,30 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.1",
+            "version": "0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "765590941f76cecb32460602970a5d32282bd497"
+                "reference": "11066b22d1a2a61b4fa4a4e1ae4af326dc9a33e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/765590941f76cecb32460602970a5d32282bd497",
-                "reference": "765590941f76cecb32460602970a5d32282bd497",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/11066b22d1a2a61b4fa4a4e1ae4af326dc9a33e0",
+                "reference": "11066b22d1a2a61b4fa4a4e1ae4af326dc9a33e0",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
                 "phpunit/phpunit": "~8.0",
                 "symfony/panther": "^0.6",
-                "webignition/symfony-panther-dom-crawler-navigator": "^0.13.0",
-                "webignition/webdriver-element-inspector": "^0.6.0",
-                "webignition/webdriver-element-mutator": "^0.2.0"
+                "webignition/symfony-panther-dom-crawler-navigator": ">=0.15,<1",
+                "webignition/webdriver-element-inspector": ">=0.6,<1",
+                "webignition/webdriver-element-mutator": ">=0.2,<1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.15",
+                "phpstan/phpstan": "^0.12",
                 "squizlabs/php_codesniffer": "3.*",
-                "webignition/base-panther-test-case": "^0.1.0"
+                "webignition/symfony-panther-webserver-runner": ">=0.1,<1"
             },
             "type": "library",
             "autoload": {
@@ -3315,27 +3359,69 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2019-11-01T10:19:36+00:00"
+            "time": "2019-12-30T16:04:41+00:00"
         },
         {
-            "name": "webignition/php-dom-element-locator",
-            "version": "0.1",
+            "name": "webignition/php-dom-element-identifier",
+            "version": "0.7",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webignition/php-dom-element-locator.git",
-                "reference": "78873e1f6d77b83672bd14f3e5e0dce07c63b828"
+                "url": "https://github.com/webignition/php-dom-element-identifier.git",
+                "reference": "ba0f0830e3411bbcee6c7d6bc99e7266baa16763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-dom-element-locator/zipball/78873e1f6d77b83672bd14f3e5e0dce07c63b828",
-                "reference": "78873e1f6d77b83672bd14f3e5e0dce07c63b828",
+                "url": "https://api.github.com/repos/webignition/php-dom-element-identifier/zipball/ba0f0830e3411bbcee6c7d6bc99e7266baa16763",
+                "reference": "ba0f0830e3411bbcee6c7d6bc99e7266baa16763",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "webignition/php-dom-element-locator": ">=0.2,<1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\DomElementIdentifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/php-dom-element-identifier",
+            "time": "2019-12-30T15:33:49+00:00"
+        },
+        {
+            "name": "webignition/php-dom-element-locator",
+            "version": "0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/php-dom-element-locator.git",
+                "reference": "5f86d51d0a40fc7e8817d229adfbd33106010a63"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/php-dom-element-locator/zipball/5f86d51d0a40fc7e8817d229adfbd33106010a63",
+                "reference": "5f86d51d0a40fc7e8817d229adfbd33106010a63",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.16",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -3357,33 +3443,35 @@
             ],
             "description": "Model for identifying the location of an element within a DOM",
             "homepage": "https://github.com/webignition/php-dom-element-locator",
-            "time": "2019-09-25T16:49:40+00:00"
+            "time": "2019-12-18T15:59:38+00:00"
         },
         {
             "name": "webignition/symfony-panther-dom-crawler-navigator",
-            "version": "0.13",
+            "version": "0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/symfony-panther-dom-crawler-navigator.git",
-                "reference": "5784f4eb170bfba01848cddc155c574a18616e81"
+                "reference": "7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/5784f4eb170bfba01848cddc155c574a18616e81",
-                "reference": "5784f4eb170bfba01848cddc155c574a18616e81",
+                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73",
+                "reference": "7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73",
                 "shasum": ""
             },
             "require": {
                 "facebook/webdriver": "^1.7.1",
                 "php": ">=7.2",
+                "phpstan/extension-installer": "^1.0",
                 "symfony/panther": "^0.6",
-                "webignition/php-dom-element-locator": "^0.1.0",
+                "webignition/php-dom-element-identifier": ">=0.7,<1",
+                "webignition/php-dom-element-locator": ">=0.1,<1",
                 "webignition/web-driver-element-collection": ">=0.5,<1"
             },
             "require-dev": {
                 "mockery/mockery": "^1.2",
-                "phpstan/phpstan": "^0.11.15",
-                "phpstan/phpstan-mockery": "^0.11.3",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-mockery": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*",
                 "webignition/base-panther-test-case": "^0.1.0"
@@ -3406,7 +3494,7 @@
             ],
             "description": "Navigate around a symfony panther dom crawler using convenience methods",
             "homepage": "https://github.com/webignition/symfony-panther-dom-crawler-navigatorr",
-            "time": "2019-10-31T17:07:06+00:00"
+            "time": "2019-12-30T15:53:01+00:00"
         },
         {
             "name": "webignition/web-driver-element-collection",
